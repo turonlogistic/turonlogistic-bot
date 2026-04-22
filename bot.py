@@ -166,7 +166,7 @@ async def get_contact(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     )
 
     try:
-        await ctx.bot.send_message(chat_id="@TLG_UZB", text=msg, parse_mode="HTML")
+        await ctx.bot.send_message(chat_id=7729758589, text=msg, parse_mode="HTML")
     except Exception as e:
         logging.warning(f"Ошибка отправки менеджеру: {e}")
 
