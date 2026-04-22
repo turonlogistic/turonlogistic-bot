@@ -6,7 +6,6 @@ Turon Logistic Group — Telegram Bot
 """
 
 import logging
-import asyncio
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import (
     Application, CommandHandler, MessageHandler,
@@ -29,14 +28,14 @@ T = {
         "ask_transport": "🚛 Выберите вид транспорта:",
         "transport_opts": ["🚛 Авто", "🚂 Железная дорога", "✈️ Авиа", "📦 Сборный груз", "❓ Не знаю / Посоветуйте"],
         "ask_weight": "⚖️ Примерный вес и объём груза?\n(Например: 500 кг, 2 куб.м)",
-        "ask_dimensions": "📐 Размеры одного места (упаковки)?\n(Например: 120×80×100 см или напишите «не знаю»)",
+        "ask_dimensions": "📐 Размеры одного места (упаковки)?\n(Например: 120х80х100 см или напишите 'не знаю')",
         "ask_stackable": "📦 Можно ли штабелировать груз?\n(Ставить ящики/паллеты друг на друга)",
         "stackable_opts": ["✅ Да, можно", "❌ Нет, нельзя", "⚠️ Только 1 ярус", "❓ Не знаю"],
         "ask_contact": "📱 Ваш номер телефона или Telegram для связи:",
         "done": "✅ <b>Заявка принята!</b>\n\nНаш менеджер свяжется с вами в ближайшее время.\nОбычно отвечаем в течение 30 минут в рабочее время.\n\nСпасибо, что выбрали Turon Logistic Group! 🙏",
         "contacts": "📞 <b>Контакты Turon Logistic Group</b>\n\n📱 Телефон: +998 95 341 05 50\n✉️ Email: info@turonlogistic.uz\n📍 Адрес: г. Ташкент, ул. А.Темура, 1 проезд, дом 6\n🌐 Сайт: turonlogistic.uz\n✈️ Telegram-канал: @pro_customsuz",
         "about": "🏢 <b>О компании Turon Logistic Group</b>\n\n✅ 10 лет на рынке\n✅ Доставка из Европы, Китая, Турции\n✅ Все виды транспорта: авто, ж/д, авиа\n✅ Таможенное оформление под ключ\n✅ Сборные грузы — экономия до 60%\n✅ Поиск производителей\n\nПрофессионально. Надёжно. В срок.",
-        "notify": "🔔 <b>НОВАЯ ЗАЯВКА</b>\n\n🌍 Откуда: {a}\n📍 Куда: {b}\n📦 Товар: {c}\n🚛 Транспорт: {d}\n⚖️ Вес/объём: {e}\n📐 Размеры: {f}\n📦 Штабелирование: {g}\n📱 Контакт: {h}\n👤 Telegram: {i}\n🌐 Язык: RU 🇷🇺",
+        "notify": "🔔 <b>НОВАЯ ЗАЯВКА</b>\n\n🌍 Откуда: {a}\n📍 Куда: {b}\n📦 Товар: {c}\n🚛 Транспорт: {d}\n⚖️ Вес/объём: {e}\n📐 Размеры: {f}\n📦 Штабелирование: {g}\n📱 Контакт: {h}\n👤 Telegram: {i}\n🌐 Язык: RU",
     },
     "uz": {
         "welcome": "👋 <b>Turon Logistic Group</b>ga xush kelibsiz!\n\n🚚 Xalqaro yuk tashish va bojxona rasmiylashtiruvi.\nYevropa • Xitoy • Turkiya → O'zbekiston\n\nAmalni tanlang:",
@@ -47,32 +46,32 @@ T = {
         "ask_transport": "🚛 Transport turini tanlang:",
         "transport_opts": ["🚛 Avto", "🚂 Temir yo'l", "✈️ Avia", "📦 Yig'ma yuk", "❓ Bilmayman / Maslahat bering"],
         "ask_weight": "⚖️ Taxminiy og'irlik va hajm?\n(Masalan: 500 kg, 2 kub.m)",
-        "ask_dimensions": "📐 Bir o'rin (qadoq) o'lchamlari?\n(Masalan: 120×80×100 sm yoki «bilmayman» deb yozing)",
-        "ask_stackable": "📦 Yukni shtabellashtirish mumkinmi?\n(Qutilari/palletlarni bir-birining ustiga qo'yish)",
+        "ask_dimensions": "📐 Bir o'rin o'lchamlari?\n(Masalan: 120x80x100 sm yoki 'bilmayman' deb yozing)",
+        "ask_stackable": "📦 Yukni shtabellashtirish mumkinmi?",
         "stackable_opts": ["✅ Ha, mumkin", "❌ Yo'q, mumkin emas", "⚠️ Faqat 1 qator", "❓ Bilmayman"],
         "ask_contact": "📱 Telefon raqamingiz yoki Telegram:",
-        "done": "✅ <b>Ariza qabul qilindi!</b>\n\nMenejerimiz tez orada siz bilan bog'lanadi.\nOdatda ish vaqtida 30 daqiqa ichida javob beramiz.\n\nTuron Logistic Group'ni tanlaganingiz uchun rahmat! 🙏",
-        "contacts": "📞 <b>Turon Logistic Group aloqa ma'lumotlari</b>\n\n📱 Telefon: +998 95 341 05 50\n✉️ Email: info@turonlogistic.uz\n📍 Manzil: Toshkent sh., A.Temur ko'chasi, 1-o'tish, 6-uy\n🌐 Sayt: turonlogistic.uz\n✈️ Telegram kanal: @pro_customsuz",
-        "about": "🏢 <b>Turon Logistic Group haqida</b>\n\n✅ Bozorda 10 yil\n✅ Yevropa, Xitoy, Turkiyadan yetkazib berish\n✅ Barcha transport turlari: avto, temir yo'l, avia\n✅ Bojxona rasmiylashtiruvi «kalit ostida»\n✅ Yig'ma yuklar — 60% gacha tejash\n✅ Ishlab chiqaruvchilarni qidirish\n\nProfessional. Ishonchli. O'z vaqtida.",
-        "notify": "🔔 <b>YANGI ARIZA</b>\n\n🌍 Qayerdan: {a}\n📍 Qayerga: {b}\n📦 Tovar: {c}\n🚛 Transport: {d}\n⚖️ Og'irlik/hajm: {e}\n📐 O'lchamlar: {f}\n📦 Shtabellash: {g}\n📱 Kontakt: {h}\n👤 Telegram: {i}\n🌐 Til: UZ 🇺🇿",
+        "done": "✅ <b>Ariza qabul qilindi!</b>\n\nMenejerimiz tez orada siz bilan bog'lanadi.\n\nTuron Logistic Group'ni tanlaganingiz uchun rahmat! 🙏",
+        "contacts": "📞 <b>Turon Logistic Group</b>\n\n📱 Telefon: +998 95 341 05 50\n✉️ Email: info@turonlogistic.uz\n📍 Toshkent sh., A.Temur ko'chasi, 1-o'tish, 6-uy\n🌐 turonlogistic.uz\n✈️ @pro_customsuz",
+        "about": "🏢 <b>Turon Logistic Group</b>\n\n✅ Bozorda 10 yil\n✅ Yevropa, Xitoy, Turkiyadan yetkazib berish\n✅ Barcha transport turlari\n✅ Bojxona rasmiylashtiruvi\n✅ Yig'ma yuklar — 60% gacha tejash\n\nProfessional. Ishonchli. O'z vaqtida.",
+        "notify": "🔔 <b>YANGI ARIZA</b>\n\n🌍 Qayerdan: {a}\n📍 Qayerga: {b}\n📦 Tovar: {c}\n🚛 Transport: {d}\n⚖️ Og'irlik: {e}\n📐 O'lchamlar: {f}\n📦 Shtabellash: {g}\n📱 Kontakt: {h}\n👤 Telegram: {i}\n🌐 Til: UZ",
     },
     "en": {
         "welcome": "👋 Welcome to <b>Turon Logistic Group</b>!\n\n🚚 International freight & customs clearance.\nEurope • China • Turkey → Uzbekistan\n\nChoose an option:",
         "menu": ["📦 Submit Request", "📞 Contacts", "ℹ️ About Us"],
-        "ask_from": "📍 Where should we pick up the cargo?\n(e.g. Shanghai, China)",
+        "ask_from": "📍 Where to pick up the cargo?\n(e.g. Shanghai, China)",
         "ask_to": "📍 Where to deliver?\n(e.g. Tashkent, Uzbekistan)",
         "ask_cargo": "📦 What are we shipping? Describe the goods:",
         "ask_transport": "🚛 Choose transport type:",
         "transport_opts": ["🚛 Road", "🚂 Railway", "✈️ Air", "📦 Groupage", "❓ Not sure / Advise me"],
         "ask_weight": "⚖️ Approximate weight and volume?\n(e.g. 500 kg, 2 cbm)",
-        "ask_dimensions": "📐 Dimensions of one package?\n(e.g. 120×80×100 cm, or type 'unknown')",
-        "ask_stackable": "📦 Can the cargo be stacked?\n(Placing boxes/pallets on top of each other)",
+        "ask_dimensions": "📐 Dimensions of one package?\n(e.g. 120x80x100 cm or type 'unknown')",
+        "ask_stackable": "📦 Can the cargo be stacked?",
         "stackable_opts": ["✅ Yes, stackable", "❌ No, not stackable", "⚠️ 1 layer only", "❓ Unknown"],
-        "ask_contact": "📱 Your phone number or Telegram for contact:",
-        "done": "✅ <b>Request received!</b>\n\nOur manager will contact you shortly.\nWe usually respond within 30 minutes during business hours.\n\nThank you for choosing Turon Logistic Group! 🙏",
-        "contacts": "📞 <b>Turon Logistic Group Contacts</b>\n\n📱 Phone: +998 95 341 05 50\n✉️ Email: info@turonlogistic.uz\n📍 Address: Tashkent, A.Temur St., 1st passage, 6\n🌐 Website: turonlogistic.uz\n✈️ Telegram channel: @pro_customsuz",
-        "about": "🏢 <b>About Turon Logistic Group</b>\n\n✅ 10 years in business\n✅ Delivery from Europe, China, Turkey\n✅ All transport modes: road, rail, air\n✅ Full customs clearance service\n✅ Groupage cargo — save up to 60%\n✅ Manufacturer sourcing\n\nProfessional. Reliable. On time.",
-        "notify": "🔔 <b>NEW REQUEST</b>\n\n🌍 From: {a}\n📍 To: {b}\n📦 Cargo: {c}\n🚛 Transport: {d}\n⚖️ Weight/volume: {e}\n📐 Dimensions: {f}\n📦 Stackable: {g}\n📱 Contact: {h}\n👤 Telegram: {i}\n🌐 Language: EN 🇬🇧",
+        "ask_contact": "📱 Your phone number or Telegram:",
+        "done": "✅ <b>Request received!</b>\n\nOur manager will contact you shortly.\n\nThank you for choosing Turon Logistic Group! 🙏",
+        "contacts": "📞 <b>Turon Logistic Group</b>\n\n📱 Phone: +998 95 341 05 50\n✉️ Email: info@turonlogistic.uz\n📍 Tashkent, A.Temur St., 1st passage, 6\n🌐 turonlogistic.uz\n✈️ @pro_customsuz",
+        "about": "🏢 <b>Turon Logistic Group</b>\n\n✅ 10 years in business\n✅ Europe, China, Turkey delivery\n✅ All transport modes\n✅ Full customs clearance\n✅ Groupage — save up to 60%\n\nProfessional. Reliable. On time.",
+        "notify": "🔔 <b>NEW REQUEST</b>\n\n🌍 From: {a}\n📍 To: {b}\n📦 Cargo: {c}\n🚛 Transport: {d}\n⚖️ Weight: {e}\n📐 Dimensions: {f}\n📦 Stackable: {g}\n📱 Contact: {h}\n👤 Telegram: {i}\n🌐 EN",
     }
 }
 
@@ -172,17 +171,16 @@ async def get_contact(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         logging.warning(f"Ошибка отправки менеджеру: {e}")
 
     await update.message.reply_text(T[lang]["done"], parse_mode="HTML", reply_markup=menu_kb(lang))
-    saved_lang = lang
     ctx.user_data.clear()
-    ctx.user_data["lang"] = saved_lang
+    ctx.user_data["lang"] = lang
     return MENU
 
 async def cancel(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     lang = ctx.user_data.get("lang", "ru")
-    await update.message.reply_text("❌", reply_markup=menu_kb(lang))
+    await update.message.reply_text("❌ Отменено", reply_markup=menu_kb(lang))
     return MENU
 
-async def main():
+def main():
     app = Application.builder().token(TOKEN).build()
     conv = ConversationHandler(
         entry_points=[CommandHandler("start", start)],
@@ -202,14 +200,8 @@ async def main():
         allow_reentry=True
     )
     app.add_handler(conv)
-    print("✅ Бот запущен! Turon Logistic Bot работает...")
-    async with app:
-        await app.initialize()
-        await app.start()
-        await app.updater.start_polling(drop_pending_updates=True)
-        print("🟢 Бот активен. Ожидание сообщений...")
-        await app.updater.idle()
-        await app.stop()
+    print("✅ Бот запущен!")
+    app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
